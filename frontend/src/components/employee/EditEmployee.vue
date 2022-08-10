@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import SuccessAlert from './common/SuccessAlert.vue'
-import EmployeeForm from './common/EmployeeForm.vue'
+import SuccessAlert from '../common/SuccessAlert.vue'
+import EmployeeForm from '../common/EmployeeForm.vue'
 export default {
   name: 'EditEmployee',
   components: {
