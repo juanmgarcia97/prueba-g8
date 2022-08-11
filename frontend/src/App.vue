@@ -25,7 +25,11 @@ export default {
 </script>
 
 <style lang="css">
-
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 app {
   grid-template-areas: 'header header header' '. main .' 'footer footer footer';
 }

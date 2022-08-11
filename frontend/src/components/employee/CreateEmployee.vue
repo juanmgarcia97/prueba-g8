@@ -1,9 +1,14 @@
 <template>
-  <div class="px-5">
-    <SuccessAlert :message="message" v-show="success"></SuccessAlert>
+  <h2 style="padding: 1rem">Crear empleado</h2>
+  <div class="v-container">
+    <alert-component
+      :message="message"
+      :success="success"
+      :show="alert"
+    ></alert-component>
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-text-field
-        v-model="employee.id"
+        v-model="employee.identification"
         :rules="idRules"
         label="Cedula"
         required
@@ -45,33 +50,36 @@
 </template>
 
 <script>
-import SuccessAlert from '../common/SuccessAlert.vue';
+import AlertComponent from '../common/AlertComponent.vue';
 import EmployeeForm from '../common/EmployeeForm.vue';
 export default {
   name: 'CreateEmployee',
-  components: {
-    SuccessAlert,
-    EmployeeForm,
-  },
   data() {
     return {
       success: false,
+      alert: false,
       message: '',
       valid: true,
       employee: {
-        id: '',
+        identification: '',
         firstName: '',
         lastName: '',
         age: 0,
         position: '',
         phone: '',
       },
-      positions: ['Gerente', 'Subgerente', 'Empleado', 'Contratista', 'Director'],
+      positions: [
+        'Gerente',
+        'Subgerente',
+        'Empleado',
+        'Contratista',
+        'Director',
+      ],
       idRules: [
         (v) => !!v || 'La cedula es obligatoria',
         (v) =>
           (v && v.length <= 12) || 'La cedula debe ser menos de 12 caracteres',
-          (v) => (v && /^\d+$/.test(v)) || 'La cedula debe ser numerica'
+        (v) => (v && /^\d+$/.test(v)) || 'La cedula debe ser numerica',
       ],
       firstNameRules: [
         (v) => !!v || 'El nombre es obligatorio',
@@ -101,10 +109,26 @@ export default {
   },
   methods: {
     async saveEmployee(employee) {
-      this.success = true;
-      this.message = 'Employee saved successfully.';
-      console.log(employee);
+      fetch(process.env.VUE_APP_BACKEND_API_EMPLOYEES, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(employee),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          this.message = data.message;
+          this.success = data.isSuccess;
+          this.alert = true;
+          this.$refs.form.reset();
+          this.$refs.form.resetValidation();
+        })
+        .catch((data) => {
+          this.alert = true;
+          this.message = data.message;
+          this.success = data.isSuccess;
+        });
     },
   },
+  components: { AlertComponent, EmployeeForm, },
 };
 </script>

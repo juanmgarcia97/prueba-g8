@@ -1,3 +1,4 @@
+import { injectable } from 'inversify';
 import { Repository } from 'typeorm';
 import { Employee } from '../domain/employee';
 import EmployeeNotFound from '../domain/exceptions/employeeNotFound';
@@ -6,6 +7,7 @@ import { AppDataSource } from './persistence/db.config';
 import EmployeeEntity from './persistence/entity/employee.entity';
 import EmployeeMapper from './persistence/mapper/employee.mapper';
 
+@injectable()
 export default class EmployeeRepositoryImpl implements EmployeeRepository {
   private repositoryORM: Repository<EmployeeEntity>;
   constructor() {
@@ -33,7 +35,7 @@ export default class EmployeeRepositoryImpl implements EmployeeRepository {
   async updateEmployee(cedula: string, employee: Employee): Promise<Employee> {
     await this.findByCedula(cedula);
     employee.setId = cedula;
-    await this.repositoryORM.update(cedula, EmployeeMapper.toEntity(employee));
+    await this.repositoryORM.update({id: cedula}, EmployeeMapper.toEntity(employee));
     return employee;
   }
 

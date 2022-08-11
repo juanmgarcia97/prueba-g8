@@ -1,6 +1,6 @@
 <template>
   <div id="header">
-    <v-app-bar color="blue" app dark>
+    <v-app-bar color="green" app dark>
       <v-toolbar-title>
         <h2 style="color: white">Control de asistencias - Grupo G8</h2>
       </v-toolbar-title>

@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('EMPLEADOS')
+@Entity('EMPLEADO')
 export default class EmployeeEntity {
   @PrimaryColumn({
     name: 'CEDULA',

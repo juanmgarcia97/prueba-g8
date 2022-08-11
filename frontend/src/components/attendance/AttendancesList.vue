@@ -6,10 +6,10 @@
       :message="message"
     ></alert-component>
     <div style="display: flex; justify-content: space-around">
-      <h1>Listado de empleados</h1>
+      <h1>Listado de asistencias</h1>
       <v-btn prepend-icon="mdi-plus" to="/employees/create"
-        >Crear empleado</v-btn
-      >
+        >Crear asistencia
+      </v-btn>
     </div>
     <v-table fixed-header>
       <thead>
@@ -19,58 +19,46 @@
       </thead>
       <tbody>
         <tr
-          v-for="employee in employees"
-          :key="employee.id"
+          v-for="attendance in attendances"
+          :key="attendance.id"
           class="text-center"
         >
-          <td>{{ employee.identification }}</td>
-          <td>{{ employee.firstName }}</td>
-          <td>{{ employee.lastName }}</td>
-          <td>{{ employee.age }}</td>
-          <td>{{ employee.position }}</td>
-          <td>{{ employee.phone }}</td>
+          <td>{{ attendance.id }}</td>
+          <td>{{ attendance.employee }}</td>
+          <td>{{ attendance.startTime }}</td>
+          <td>{{ attendance.endTime }}</td>
+          <td>{{ attendance.date }}</td>
           <td>
-            <v-btn
-              size="small"
-              icon="mdi-pencil"
-              color="info"
-              :to="`/employees/edit/${employee.identification}`"
-            ></v-btn>
-            <v-btn
-              size="small"
-              icon="mdi-delete"
-              color="error"
-              v-on:click="openDialog(employee.identification)"
-            ></v-btn>
+            <v-btn size="small" icon="mdi-delete" color="error"></v-btn>
+            <v-btn size="small" icon="mdi-pencil" color="info"></v-btn>
           </td>
         </tr>
       </tbody>
     </v-table>
-    <DialogComponent
-      title="Eliminar empleado"
-      message="¿Seguro que deseas eliminar este empleado?"
+    <dialog-component
+      title="Eliminar asistencia"
+      message="¿Seguro que deseas eliminar esta asistencia?"
       :dialog="dialog"
       v-if="dialog"
       @click="deleteEmployee"
-    ></DialogComponent>
+    ></dialog-component>
   </div>
 </template>
 
 <script>
-import DialogComponent from '../common/DialogComponent.vue';
 import AlertComponent from '../common/AlertComponent.vue';
+import DialogComponent from '../common/DialogComponent.vue';
 export default {
-  name: 'EmployeesList',
+  name: 'AttendancesList',
   data() {
     return {
-      employees: [],
+      attendances: [],
       headers: [
-        'Cedula',
-        'Nombres',
-        'Apellidos',
-        'Edad',
-        'Cargo',
-        'Celular',
+        'Id',
+        'Empleado',
+        'Hora ingreso',
+        'Hora salida',
+        'Fecha',
         'Acciones',
       ],
       dialog: false,
@@ -81,8 +69,8 @@ export default {
     };
   },
   methods: {
-    async deleteEmployee() {
-      fetch(`${process.env.VUE_APP_BACKEND_API_EMPLOYEES}/${this.id}`, {
+    async deleteAttendance() {
+      fetch(`${process.env.VUE_APP_BACKEND_API_ATTENDANCES}/${this.id}`, {
         method: 'DELETE',
       })
         .then((res) => res.json())
@@ -106,18 +94,20 @@ export default {
       this.id = id;
       this.dialog = !this.dialog;
     },
+    formatDate(date) {
+      const { year, month, day } = date.split('T')[0].split('-');
+      return day + '/' + month + '/' + year;
+    },
   },
   mounted() {
-    fetch(process.env.VUE_APP_BACKEND_API_EMPLOYEES)
+    fetch(process.env.VUE_APP_BACKEND_API_ATTENDANCES)
       .then((res) => res.json())
-      .then((data) => (this.employees = data.data))
-      .catch((error) => {
-        this.success = error.isSuccess;
-        this.message = error.message;
-        this.alert = true;
+      .then((data) => (this.attendances = data.data))
+      .catch((err) => {
+        console.log(err);
       });
   },
-  components: { DialogComponent, AlertComponent },
+  components: { AlertComponent, DialogComponent },
 };
 </script>
 

@@ -27,7 +27,7 @@
       <v-divider></v-divider>
 
       <v-card-text class="text-white">
-        {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+        {{ new Date().getFullYear() }} — <strong>Grupo G8</strong>
       </v-card-text>
     </v-card>
   </v-footer>
@@ -36,6 +36,6 @@
 <script>
 export default {
   name: 'FooterComponent',
-  
+
 }
 </script>

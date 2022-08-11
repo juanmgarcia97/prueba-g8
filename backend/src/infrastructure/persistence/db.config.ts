@@ -1,4 +1,5 @@
 import { DataSource } from 'typeorm';
+import AttendanceEntity from './entity/attendance.entity';
 import EmployeeEntity from './entity/employee.entity';
 
 export const AppDataSource = new DataSource({
@@ -10,7 +11,7 @@ export const AppDataSource = new DataSource({
   port: Number(process.env.DB_PORT),
   synchronize: true,
   logging: true,
-  entities: [EmployeeEntity],
+  entities: [EmployeeEntity, AttendanceEntity],
   migrations: [],
   subscribers: [],
 });
