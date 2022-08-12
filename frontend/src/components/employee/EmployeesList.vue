@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     async deleteEmployee() {
-      fetch(`${process.env.VUE_APP_BACKEND_API_EMPLOYEES}/${this.id}`, {
+      fetch(`${process.env.VUE_APP_BACKEND_API}/employees/${this.id}`, {
         method: 'DELETE',
       })
         .then((res) => res.json())
@@ -110,7 +110,7 @@ export default {
     },
   },
   mounted() {
-    fetch(process.env.VUE_APP_BACKEND_API_EMPLOYEES)
+    fetch(`${process.env.VUE_APP_BACKEND_API}/employees`)
       .then((res) => res.json())
       .then((data) => (this.employees = data.data))
       .catch((error) => {

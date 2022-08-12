@@ -51,7 +51,6 @@
 
 <script>
 import AlertComponent from '../common/AlertComponent.vue';
-import EmployeeForm from '../common/EmployeeForm.vue';
 export default {
   name: 'CreateEmployee',
   data() {
@@ -109,7 +108,7 @@ export default {
   },
   methods: {
     async saveEmployee(employee) {
-      fetch(process.env.VUE_APP_BACKEND_API_EMPLOYEES, {
+      fetch(`${process.env.VUE_APP_BACKEND_API}/employees`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(employee),
@@ -129,6 +128,6 @@ export default {
         });
     },
   },
-  components: { AlertComponent, EmployeeForm, },
+  components: { AlertComponent },
 };
 </script>

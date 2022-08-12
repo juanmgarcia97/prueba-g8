@@ -1,26 +1,20 @@
 <template>
   <v-app id="app">
-    <HeaderComponent>
-      </HeaderComponent>
-      <v-main id="main">
-        <router-view></router-view>
-      </v-main>
-    <FooterComponent id="footer"></FooterComponent>
+    <HeaderComponent> </HeaderComponent>
+    <v-main id="main">
+      <router-view></router-view>
+    </v-main>
   </v-app>
 </template>
 
 <script>
-import FooterComponent from './components/common/FooterComponent.vue';
 import HeaderComponent from './components/common/HeaderComponent.vue';
 export default {
-    name: "App",
-    component: {
-        FooterComponent
-    },
-    data: () => ({
+  name: 'App',
+  data: () => ({
     //
-    }),
-    components: { FooterComponent, HeaderComponent }
+  }),
+  components: { HeaderComponent },
 };
 </script>
 

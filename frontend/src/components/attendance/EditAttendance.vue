@@ -83,7 +83,7 @@ export default {
   components: { AlertComponent },
   created() {
     const id = useRoute().params.id;
-    fetch(`${process.env.VUE_APP_BACKEND_API_ATTENDANCES}/${id}`)
+    fetch(`${process.env.VUE_APP_BACKEND_API}/attendances/${id}`)
       .then((res) => res.json())
       .then((data) => {
         this.attendance = data.data;
@@ -91,7 +91,7 @@ export default {
       });
   },
   mounted() {
-    fetch(process.env.VUE_APP_BACKEND_API_EMPLOYEES)
+    fetch(`${process.env.VUE_APP_BACKEND_API}/employees`)
       .then((res) => res.json())
       .then(
         (data) =>
@@ -115,7 +115,7 @@ export default {
   },
   methods: {
     async editAttendance(attendance) {
-      fetch(`${process.env.VUE_APP_BACKEND_API_ATTENDANCES}/${attendance.id}`, {
+      fetch(`${process.env.VUE_APP_BACKEND_API}/attendances/${attendance.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(attendance),

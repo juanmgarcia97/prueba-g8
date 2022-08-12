@@ -113,14 +113,14 @@ export default {
   },
   created() {
     const id = useRoute().params.id;
-    fetch(`${process.env.VUE_APP_BACKEND_API_EMPLOYEES}/${id}`)
+    fetch(`${process.env.VUE_APP_BACKEND_API}/employees/${id}`)
       .then((res) => res.json())
       .then((data) => (this.employee = data.data));
   },
   methods: {
     async editEmployee(employee) {
       fetch(
-        `${process.env.VUE_APP_BACKEND_API_EMPLOYEES}/${employee.identification}`,
+        `${process.env.VUE_APP_BACKEND_API}/employees/${employee.identification}`,
         {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },

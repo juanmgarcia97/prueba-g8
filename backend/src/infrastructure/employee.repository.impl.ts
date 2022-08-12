@@ -6,7 +6,6 @@ import { EmployeeRepository } from '../repository/employee.repository';
 import { AppDataSource } from './persistence/db.config';
 import AttendanceEntity from './persistence/entity/attendance.entity';
 import EmployeeEntity from './persistence/entity/employee.entity';
-import AttendanceMapper from './persistence/mapper/attendance.mapper';
 import EmployeeMapper from './persistence/mapper/employee.mapper';
 
 @injectable()

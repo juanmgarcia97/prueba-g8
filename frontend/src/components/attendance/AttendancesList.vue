@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     async deleteAttendance() {
-      fetch(`${process.env.VUE_APP_BACKEND_API_ATTENDANCES}/${this.id}`, {
+      fetch(`${process.env.VUE_APP_BACKEND_API}/attendances/${this.id}`, {
         method: 'DELETE',
       })
         .then((res) => res.json())
@@ -108,7 +108,7 @@ export default {
     },
   },
   mounted() {
-    fetch(process.env.VUE_APP_BACKEND_API_ATTENDANCES)
+    fetch(`${process.env.VUE_APP_BACKEND_API}/attendances`)
       .then((res) => res.json())
       .then((data) => (this.attendances = data.data))
       .catch((err) => {

@@ -79,7 +79,7 @@ export default {
   }),
   components: { AlertComponent },
   mounted() {
-    fetch(process.env.VUE_APP_BACKEND_API_EMPLOYEES)
+    fetch(`${process.env.VUE_APP_BACKEND_API}/employees`)
       .then((res) => res.json())
       .then(
         (data) =>
@@ -103,7 +103,7 @@ export default {
   },
   methods: {
     async saveAttendance(attendance) {
-      fetch(process.env.VUE_APP_BACKEND_API_ATTENDANCES, {
+      fetch(`${process.env.VUE_APP_BACKEND_API}/attendances`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(attendance),
