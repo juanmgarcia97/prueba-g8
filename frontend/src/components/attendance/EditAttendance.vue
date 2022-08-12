@@ -1,5 +1,5 @@
 <template>
-  <h2 style="padding: 1rem">Ingresar asistencia</h2>
+  <h2 style="padding: 1rem">Editar asistencia</h2>
   <div class="v-container">
     <alert-component
       :message="message"
@@ -16,10 +16,10 @@
         required
       ></v-select>
       <div>
-        <label
+        <v-label
           for="date-picker"
           class="v-label v-field-label v-field-label--floating"
-          >Fecha</label
+          >Fecha</v-label
         >
         <input
           type="date"
@@ -55,15 +55,18 @@
           v-model="attendance.endTime"
         />
       </div>
-      <v-btn class="mr-4" @click="saveAttendance(attendance)"> Crear </v-btn>
+      <v-btn class="mr-4" @click="editAttendance(attendance)">
+        Actualizar
+      </v-btn>
     </v-form>
   </div>
 </template>
 
 <script>
+import { useRoute } from 'vue-router';
 import AlertComponent from '../common/AlertComponent.vue';
 export default {
-  name: 'CreateAttendance',
+  name: 'EditAttendance',
   data: () => ({
     valid: true,
     attendance: {
@@ -78,6 +81,15 @@ export default {
     message: '',
   }),
   components: { AlertComponent },
+  created() {
+    const id = useRoute().params.id;
+    fetch(`${process.env.VUE_APP_BACKEND_API_ATTENDANCES}/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        this.attendance = data.data;
+        this.attendance.date = new Date(this.attendance.date);
+      });
+  },
   mounted() {
     fetch(process.env.VUE_APP_BACKEND_API_EMPLOYEES)
       .then((res) => res.json())
@@ -102,9 +114,9 @@ export default {
       });
   },
   methods: {
-    async saveAttendance(attendance) {
-      fetch(process.env.VUE_APP_BACKEND_API_ATTENDANCES, {
-        method: 'POST',
+    async editAttendance(attendance) {
+      fetch(`${process.env.VUE_APP_BACKEND_API_ATTENDANCES}/${attendance.id}`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(attendance),
       })
@@ -113,8 +125,6 @@ export default {
           this.message = data.message;
           this.success = data.isSuccess;
           this.alert = true;
-          this.$refs.form.reset();
-          this.$refs.form.resetValidation();
         })
         .catch((data) => {
           this.alert = true;

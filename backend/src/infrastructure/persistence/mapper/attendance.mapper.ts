@@ -25,4 +25,8 @@ export default class AttendanceMapper {
   static toDomainList(entities: AttendanceEntity[]): Attendance[] {
     return entities.map(this.toDomain);
   }
+
+  static toEntityList(domains: Attendance[]): AttendanceEntity[] {
+    return domains.map(this.toEntity);
+  }
 }

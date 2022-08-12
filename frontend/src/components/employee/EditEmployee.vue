@@ -1,7 +1,11 @@
 <template>
   <h2 style="padding: 1rem">Editar empleado</h2>
   <div class="v-container">
-    <AlertComponent :message="message" :show="success"></AlertComponent>
+    <AlertComponent
+      :message="message"
+      :show="alert"
+      :success="success"
+    ></AlertComponent>
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-text-field
         v-model="employee.identification"
@@ -42,7 +46,7 @@
         label="Celular"
         required
       ></v-text-field>
-      <v-btn class="mr-4" @click="editEmployee(employee)"> Update </v-btn>
+      <v-btn class="mr-4" @click="editEmployee(employee)"> Actualizar </v-btn>
     </v-form>
   </div>
 </template>
@@ -115,11 +119,14 @@ export default {
   },
   methods: {
     async editEmployee(employee) {
-      fetch(`${process.env.VUE_APP_BACKEND_API_EMPLOYEES}/${employee.identification}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(employee),
-      })
+      fetch(
+        `${process.env.VUE_APP_BACKEND_API_EMPLOYEES}/${employee.identification}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(employee),
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           this.success = data.isSuccess;

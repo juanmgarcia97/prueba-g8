@@ -91,10 +91,12 @@ export default {
           this.message = data.message;
           this.alert = true;
           this.dialog = false;
-          const index = this.employees.findIndex(
-            (employee) => employee.identification === this.id
-          );
-          this.employees.splice(index, 1);
+          if(data.isSuccess) {
+            const index = this.employees.findIndex(
+              (employee) => employee.identification === this.id
+            );
+            this.employees.splice(index, 1);
+          }
         })
         .catch((error) => {
           this.success = error.isSuccess;

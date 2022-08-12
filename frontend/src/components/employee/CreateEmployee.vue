@@ -44,7 +44,7 @@
         label="Celular"
         required
       ></v-text-field>
-      <v-btn class="mr-4" @click="saveEmployee(employee)"> Create </v-btn>
+      <v-btn class="mr-4" @click="saveEmployee(employee)"> Crear </v-btn>
     </v-form>
   </div>
 </template>

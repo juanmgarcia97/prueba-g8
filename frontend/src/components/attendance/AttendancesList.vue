@@ -7,7 +7,7 @@
     ></alert-component>
     <div style="display: flex; justify-content: space-around">
       <h1>Listado de asistencias</h1>
-      <v-btn prepend-icon="mdi-plus" to="/employees/create"
+      <v-btn prepend-icon="mdi-plus" to="/attendances/create"
         >Crear asistencia
       </v-btn>
     </div>
@@ -23,14 +23,23 @@
           :key="attendance.id"
           class="text-center"
         >
-          <td>{{ attendance.id }}</td>
           <td>{{ attendance.employee }}</td>
           <td>{{ attendance.startTime }}</td>
           <td>{{ attendance.endTime }}</td>
-          <td>{{ attendance.date }}</td>
+          <td>{{ formatDate(attendance.date) }}</td>
           <td>
-            <v-btn size="small" icon="mdi-delete" color="error"></v-btn>
-            <v-btn size="small" icon="mdi-pencil" color="info"></v-btn>
+            <v-btn
+              size="small"
+              icon="mdi-pencil"
+              color="info"
+              :to="`/attendances/edit/${attendance.id}`"
+            ></v-btn>
+            <v-btn
+              size="small"
+              icon="mdi-delete"
+              color="error"
+              v-on:click="openDialog(attendance.id)"
+            ></v-btn>
           </td>
         </tr>
       </tbody>
@@ -40,7 +49,7 @@
       message="¿Seguro que deseas eliminar esta asistencia?"
       :dialog="dialog"
       v-if="dialog"
-      @click="deleteEmployee"
+      @click="deleteAttendance"
     ></dialog-component>
   </div>
 </template>
@@ -54,10 +63,9 @@ export default {
     return {
       attendances: [],
       headers: [
-        'Id',
-        'Empleado',
-        'Hora ingreso',
-        'Hora salida',
+        'Cedula Empleado',
+        'Hora Ingreso',
+        'Hora Salida',
         'Fecha',
         'Acciones',
       ],
@@ -79,10 +87,10 @@ export default {
           this.message = data.message;
           this.alert = true;
           this.dialog = false;
-          const index = this.employees.findIndex(
-            (employee) => employee.identification === this.id
+          const index = this.attendances.findIndex(
+            (attendance) => attendance.identification === this.id
           );
-          this.employees.splice(index, 1);
+          this.attendances.splice(index, 1);
         })
         .catch((error) => {
           this.success = error.isSuccess;
@@ -95,8 +103,8 @@ export default {
       this.dialog = !this.dialog;
     },
     formatDate(date) {
-      const { year, month, day } = date.split('T')[0].split('-');
-      return day + '/' + month + '/' + year;
+      const string = new Date(date);
+      return string.toLocaleDateString();
     },
   },
   mounted() {

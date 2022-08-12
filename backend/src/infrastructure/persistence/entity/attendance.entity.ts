@@ -8,6 +8,7 @@ export default class AttendanceEntity {
 
   @Column({
     name: 'EMPLEADO',
+    nullable: true
   })
   @ManyToOne(() => EmployeeEntity, (employee: EmployeeEntity) => employee.id, {
     cascade: true,

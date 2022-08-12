@@ -4,14 +4,18 @@ import { Employee } from '../domain/employee';
 import EmployeeNotFound from '../domain/exceptions/employeeNotFound';
 import { EmployeeRepository } from '../repository/employee.repository';
 import { AppDataSource } from './persistence/db.config';
+import AttendanceEntity from './persistence/entity/attendance.entity';
 import EmployeeEntity from './persistence/entity/employee.entity';
+import AttendanceMapper from './persistence/mapper/attendance.mapper';
 import EmployeeMapper from './persistence/mapper/employee.mapper';
 
 @injectable()
 export default class EmployeeRepositoryImpl implements EmployeeRepository {
   private repositoryORM: Repository<EmployeeEntity>;
+  private attendanceORM: Repository<AttendanceEntity>;
   constructor() {
     this.repositoryORM = AppDataSource.getRepository(EmployeeEntity);
+    this.attendanceORM = AppDataSource.getRepository(AttendanceEntity);
   }
 
   async findAll(): Promise<Employee[]> {
@@ -41,6 +45,8 @@ export default class EmployeeRepositoryImpl implements EmployeeRepository {
 
   async deleteEmployee(cedula: string): Promise<void> {
     const employee = await this.findByCedula(cedula);
+    const attendances = await this.attendanceORM.find({where: {employee: cedula}});
+    await this.attendanceORM.remove(attendances);
     await this.repositoryORM.remove(EmployeeMapper.toEntity(employee));
   }
 }
